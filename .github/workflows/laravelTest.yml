@@ -24,7 +24,12 @@ jobs:
       - name: Install npm dependencies
         run: npm install
 
+      - name: Check if in CI environment
+        id: check_ci
+        run: echo ::set-output name=is_ci::${{ runner.os }}-${{ github.event_name }}
+
       - name: Run npm dev to generate Vite manifest
+        if: ${{ !steps.check_ci.outputs.is_ci }}
         run: npm run dev
 
       - name: Setup PHP
