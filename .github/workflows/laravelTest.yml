@@ -21,14 +21,12 @@ jobs:
         with:
           node-version: '20.11.1' # Adjust the version as needed
 
-      - name: Set environment variable for Vite
-        run: export LARAVEL_BYPASS_ENV_CHECK=1
-
       - name: Install npm dependencies
         run: npm install
 
-      - name: Run npm dev
+      - name: Run npm dev to generate Vite manifest
         run: npm run dev
+
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
