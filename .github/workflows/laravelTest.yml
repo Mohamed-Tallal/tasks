@@ -1,9 +1,8 @@
-name: Laravel
+name: Test run in the GitHub actions after each commit.
 
 on:
   push:
     branches:
-      # Change 'main' to your default branch name if it's different
 
 jobs:
   laravel-tests:
@@ -21,10 +20,10 @@ jobs:
         with:
           node-version: '20.11.1' # Adjust the version as needed
 
-      - name: Install npm dependencies
+      - name: Install npm
         run: npm install
 
-      - name: Run npm dev to generate Vite manifest
+      - name: Run npm build
         run: npm run build
 
       - name: Setup PHP
@@ -35,7 +34,8 @@ jobs:
       - name: Copy .env
         run: php -r "file_exists('.env') || copy('.env.example', '.env');"
 
-      - name: Install Dependencies
+      - name: Download laravel Package
+
         run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
 
       - name: Generate key
@@ -44,13 +44,13 @@ jobs:
       - name: Directory Permissions
         run: chmod -R 777 storage bootstrap/cache
 
-      - name: Create Database
+      - name: Create Sql lite Database
         run: |
           mkdir -p database
           touch database/database.sqlite
 
-      - name: Run migrations
+      - name: Create Database Tables
         run: php artisan migrate --env=testing --force
 
-      - name: Execute tests
+      - name: Check Unit Test
         run: php artisan test
